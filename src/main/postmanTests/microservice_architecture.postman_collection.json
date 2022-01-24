@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "bd68d2cc-4a9d-4f41-b8c2-d0be8f93c63b",
+		"name": "microservice_architecture",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://arch.homework/health/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/health/",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"health",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
