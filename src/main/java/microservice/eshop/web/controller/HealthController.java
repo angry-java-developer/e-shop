@@ -1,4 +1,4 @@
-package microservice.eshop.controller;
+package microservice.eshop.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,6 @@ public class HealthController {
     public ResponseEntity<Map<String, String>> health() {
         Map<String, String> map = new HashMap<>();
         map.put("status", "ok");
-        return new ResponseEntity(map, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
