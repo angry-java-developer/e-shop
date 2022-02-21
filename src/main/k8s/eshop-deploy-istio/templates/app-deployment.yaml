@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-v1
+  labels:
+      version: v1
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        version: v1
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.deployment.serverPort }}
+          env:
+            - name: DB_HOST
+              valueFrom:
+               configMapKeyRef:
+                name: {{ .Chart.Name }}-postgres-config
+                key: host
+            - name: DB_NAME
+              valueFrom:
+               configMapKeyRef:
+                name: {{ .Chart.Name }}-postgres-config
+                key: name
+            - name: POSTGRES_USER
+              valueFrom:
+               secretKeyRef:
+                name: {{ .Chart.Name }}-postgres-secret
+                key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+               secretKeyRef:
+                name: {{ .Chart.Name }}-postgres-secret
+                key: postgres_password
+            - name: VERSION
+              value: "v1"
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-v2
+  labels:
+      version: v2
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        version: v2
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image }}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ .Values.deployment.serverPort }}
+          env:
+            - name: DB_HOST
+              valueFrom:
+               configMapKeyRef:
+                name: {{ .Chart.Name }}-postgres-config
+                key: host
+            - name: DB_NAME
+              valueFrom:
+               configMapKeyRef:
+                name: {{ .Chart.Name }}-postgres-config
+                key: name
+            - name: POSTGRES_USER
+              valueFrom:
+               secretKeyRef:
+                name: {{ .Chart.Name }}-postgres-secret
+                key: postgres_user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+               secretKeyRef:
+                name: {{ .Chart.Name }}-postgres-secret
+                key: postgres_password
+            - name: VERSION
+              value: "v2"
+      imagePullSecrets:
+        - name: regcred

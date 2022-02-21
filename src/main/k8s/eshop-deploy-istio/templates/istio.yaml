@@ -1,0 +1,56 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ .Chart.Name }}-gateway
+spec:
+  selector:
+    app: istio-ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Chart.Name }}-ingress
+spec:
+  hosts:
+  - '*'
+  gateways:
+  - {{ .Chart.Name }}-gateway
+  http:
+  - route:
+    - destination:
+        host: {{ .Chart.Name }}-v1
+        subset: v1
+      weight: 50
+    - destination:
+        host: {{ .Chart.Name }}-v2
+        subset: v2
+      weight: 50
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ .Chart.Name }}-destination-rule-1
+spec:
+  host: {{ .Chart.Name }}-v1
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ .Chart.Name }}-destination-rule-2
+spec:
+  host: {{ .Chart.Name }}-v2
+  subsets:
+  - name: v2
+    labels:
+      version: v2

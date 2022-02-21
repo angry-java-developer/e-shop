@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-v1
+  labels:
+    version: v1
+  annotations:
+    prometheus.io/path: /actuator/prometheus
+    prometheus.io/scrape: "true"
+spec:
+  selector:
+    app: {{ .Chart.Name }}
+    version: v1
+  ports:
+    - protocol: "TCP"
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  type: {{ .Values.service.type }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}-v2
+  labels:
+    version: v2
+  annotations:
+    prometheus.io/path: /actuator/prometheus
+    prometheus.io/scrape: "true"
+spec:
+  selector:
+    app: {{ .Chart.Name }}
+    version: v2
+  ports:
+    - protocol: "TCP"
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+  type: {{ .Values.service.type }}

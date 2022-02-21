@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-postgres-config
+data:
+  host: {{ .Values.externalPostgresql.postgresqlHost }}
+  name: {{ .Values.externalPostgresql.postgresqlDatabase }}
